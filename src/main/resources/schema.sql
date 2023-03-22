@@ -1,0 +1,18 @@
+CREATE SCHEMA blogSearch;
+
+CREATE TABLE IF NOT EXISTS tb_searchQueryCount (
+    query VARCHAR(128) NOT NULL UNIQUE PRIMARY KEY,
+    cnt BIGINT NOT NULL,
+    createdAt DATETIME NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS tb_searchCache (
+    id BIGINT NOT NULL UNIQUE PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(64) NOT NULL,
+    query VARCHAR(128) NOT NULL,
+    sorder CHAR(1) NOT NULL,
+    page INT NOT NULL,   -- 0 base index
+    pageSize INT NOT NULL,
+    resultRaw CLOB NOT NULL,
+    createdAt DATETIME NOT NULL
+);
