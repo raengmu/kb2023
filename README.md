@@ -4,6 +4,7 @@
 
 ## 목차
 
+* [결과물 다운로드](#결과물-다운로드)
 * [개발환경](#개발환경)
 * [빌드 및 실행](#빌드-및-실행)
 * [구현 내역](#구현-내역)
@@ -13,6 +14,22 @@
   * TODO:
 * [API 상세](#API-상세)
 * [오류코드](#오류코드)
+
+---
+
+## 결과물 다운로드
+
+https://github.com/raengmu/kb2023/releases/tag/kb2023.1
+
+다운로드
+> $ wget https://github.com/raengmu/kb2023/releases/download/kb2023.1/kb2023-0.0.1-SNAPSHOT.jar
+
+실행
+> $ java -jar kb2023-0.0.1-SNAPSHOT.jar
+
+WAS port : 8080
+
+H2 : /h2
 
 ---
 
