@@ -63,12 +63,12 @@ class SearchTestUtil {
             page: Int,
             pageSize: Int
         ): Boolean {
-            if (result.page != page)
+            if (result.page != (page+1))
                 return false
             if (result.pageSize != pageSize)
                 return false
             val docs = result.documents
-            if (docs.size != (end - begin))
+            if (docs.size != pageSize)
                 return false
             var idx = begin
             for(doc in docs) {

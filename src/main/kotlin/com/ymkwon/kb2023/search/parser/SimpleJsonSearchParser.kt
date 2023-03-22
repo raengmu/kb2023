@@ -2,6 +2,8 @@ package com.ymkwon.kb2023.search.parser
 
 import com.ymkwon.kb2023.search.SearchResult
 import com.ymkwon.kb2023.search.SearchResultDocument
+import com.ymkwon.kb2023.search.exception.SearchException
+import com.ymkwon.kb2023.search.exception.SearchExceptionCode
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -15,6 +17,10 @@ class SimpleJsonSearchParser {
             jsonItemsList: List<JSONArray>,
             toSearchResultDocument: (jsonItem: JSONObject) -> SearchResultDocument
         ): SearchResult {
+            if (jsonItemsList.isEmpty() || (jsonItemsList.size < 2 && cacheRowBeginOffset > cacheRowEndOffset))
+                throw SearchException(SearchExceptionCode.PARSING_ERROR, "assert failed",
+                    "item size:${jsonItemsList.size}, cacheRowBeginOffset:$cacheRowBeginOffset, cacheRowEndOffset:$cacheRowEndOffset")
+
             val documents = ArrayList<SearchResultDocument>()
 
             // first
