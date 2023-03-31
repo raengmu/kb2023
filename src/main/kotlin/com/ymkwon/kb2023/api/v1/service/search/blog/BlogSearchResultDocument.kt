@@ -1,8 +1,8 @@
-package com.ymkwon.kb2023.search
+package com.ymkwon.kb2023.api.v1.service.search.blog
 
 import java.time.LocalDateTime
 
-class SearchResultDocument(
+class BlogSearchResultDocument(
     val title: String,
     val content: String,
     val url: String,

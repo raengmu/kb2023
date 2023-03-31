@@ -1,5 +1,6 @@
-package com.ymkwon.kb2023.search.jpa.entity
+package com.ymkwon.kb2023.searchjpa.entity
 
+import jdk.jfr.DataAmount
 import org.hibernate.annotations.CreationTimestamp
 import java.time.LocalDateTime
 import javax.persistence.*
@@ -12,13 +13,7 @@ class SearchCacheEntity(
     val id: Long = 0,
 
     @Column
-    val name: String,
-
-    @Column
-    val query: String,
-
-    @Column
-    val sorder: String,
+    val cacheKey: ByteArray,
 
     @Column
     val page: Int,

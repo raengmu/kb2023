@@ -12,6 +12,7 @@
   * 인기 검색어 목록
   * 기타
   * TODO:
+  * TODO: FURTHER
 * [API 상세](#API-상세)
 * [오류코드](#오류코드)
 
@@ -96,18 +97,19 @@ $ java -jar build/libs/kb2023-0.0.1-SNAPSHOT.jar
      * 검색 process 에 방해되지 않도록 async 처리
 
 3. 기타
-   * 최대한 검색 기능 일반화 하여 글, 카페, 책 검색에도 공통으로 사용할 수 있도록 설계 및 구성
+   * (완료) 최대한 검색 기능 일반화 하여 글, 카페, 책 검색에도 공통으로 사용할 수 있도록 설계 및 구성
 
 4. TODO:
    * 검색 기능 외부 서비스 API 접근 추가 최적화
      * WebClient의 connection pool 사용 고려
    * 검색 기능 cache page json string(raw) data를 parsing 된 serialized 데이타로 변경 고려
-   * countTop 성능 최적화
+   * (완료) countTop 성능 최적화
      * 검색이 요청될때마다 insert/select(update) 하도록 되어 있는데,
        async로 동작한다 하더라도 검색 횟수만큼 부하가 커지므로 부하가 발생시 문제가 될 수 있다.
      * 일반적으로 검색어 순위의 정확도는 시차를 두고 반영되어도 문제가 없을 것으로 보이므로,
        가능하다면 이러한 시차 제약사항을 이용해 각 WAS의 process들이 검색어를 집계해 일정 시간마다 한번에 DB에 반영하도록 한다.
-   * countTop 부문별 적용
+       -> @EnableSchedule 로 cron 작업 설정
+   * (완료) countTop 부문별 적용
      * 검색 기능과 마찬가지로 부문별 검색 count 집계 가능토록 재구조화 필요
    * 추후 검색 및 countTop 기능의 부하가 커져 감당할 수 없는 경우 고려
      * cache DB 및 WAS를 scale out 하는 것을 고려한 POJO 재설계 및 유지보수 필요
@@ -117,6 +119,17 @@ $ java -jar build/libs/kb2023-0.0.1-SNAPSHOT.jar
    * error response 명확히 정리
    * 검색 기능의 datetime의 TZ 정책 결정 필요
    * 검색 기능에 page 접근시 오류 또는 다른 페이지의 중복 결과(API 서버 특성에 따라) 발생 그리고 마지막 페이지 처리 필요 
+
+5. TODO: FURTHER
+    * (완료) Impl 을 bean으로 IoC container에서 관리하도록 설정 필요
+    * (완료) unused 삭제
+    * (완료) SimpleWebSearchRetriever IoC container에서 관리 및 성능 검토
+    * (완료) SimpleWebSearchRetriever의 파라미터 처리 일반화
+        * Blog 뿐 아니라 다른 search 에서도 사용 가능토록(또는 일반적인 API 처리)
+    * (완료) 구현부 구조 최적화
+      -> searchjpa, api.v1.service.searchjpa 로 JPA 구현부 이동 및 api.v1.service.config 에서 injection 설정
+    * WebMvcConfigurer.addCorsMappings override to allow origins/paths/methods/headers
+    * Kakao 나 Naver API key 은폐
 
 ---
 

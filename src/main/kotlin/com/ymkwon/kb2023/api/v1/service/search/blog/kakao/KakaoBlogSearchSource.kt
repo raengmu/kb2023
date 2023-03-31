@@ -1,4 +1,4 @@
-package com.ymkwon.kb2023.api.v1.service.search.source.kakao
+package com.ymkwon.kb2023.api.v1.service.search.blog.kakao
 
 import com.ymkwon.kb2023.config.ApplicationProperties
 import com.ymkwon.kb2023.search.*
@@ -15,7 +15,7 @@ data class KakaoBlogSearchSource(
         get() = appProperties.search.sources.kakao.name
 
     override val url: String
-        get() = appProperties.search.sources.kakao.url
+        get() = appProperties.search.sources.kakao.blog.url
 
     override val headers: Map<String, String>
         get() = mapOf(
@@ -29,23 +29,4 @@ data class KakaoBlogSearchSource(
 
     override val parser: SearchParser
         get() = searchParser
-
-    override val qsNameQuery: String
-        get() = "query"
-
-    override val qsNameSOrder: String
-        get() = "sort"
-
-    override val qsNamePage: String
-        get() = "page"
-
-    override val qsNamePageSize: String
-        get() = "size"
-
-    override fun qsSOrderValue(sorder: SearchOrder): String =
-        if (sorder == SearchOrder.LATEST)
-            "recency"
-        else
-            "accuracy"
-
 }

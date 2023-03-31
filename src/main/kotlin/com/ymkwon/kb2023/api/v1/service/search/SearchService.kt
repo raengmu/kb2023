@@ -1,18 +1,15 @@
 package com.ymkwon.kb2023.api.v1.service.search
 
-import com.ymkwon.kb2023.search.SearchOrder
-import com.ymkwon.kb2023.search.SearchQueryCount
+import com.ymkwon.kb2023.search.SearchRequest
 import com.ymkwon.kb2023.search.SearchResult
+import com.ymkwon.kb2023.search.dto.SearchQueryCountDto
 
 interface SearchService {
-    fun searchBlog(
-        query: String,
-        sorder: SearchOrder,
-        page: Int,
-        pageSize: Int
-    ): SearchResult?
+    val category: String
 
-    fun searchQueryTop(
-        num: Int
-    ): List<SearchQueryCount>
+    fun search(requests: List<SearchRequest>): SearchResult?
+
+    fun searchQueryTop(num: Int): List<SearchQueryCountDto>
+
+    fun accumulateQueryTop(query: String, count: Long)
 }

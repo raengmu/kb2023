@@ -1,7 +1,7 @@
-package com.ymkwon.kb2023.search.jpa.repository
+package com.ymkwon.kb2023.searchjpa.repository
 
 import com.ymkwon.kb2023.search.dto.SearchCacheResultRawDto
-import com.ymkwon.kb2023.search.jpa.entity.SearchCacheEntity
+import com.ymkwon.kb2023.searchjpa.entity.SearchCacheEntity
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
@@ -15,14 +15,12 @@ interface SearchCacheRepository: JpaRepository<SearchCacheEntity, Long> {
     //ATTENTION: SHOULD be ordered by createAt to remove dup page items in after-processing
     @Query("select s.page as page, s.resultRaw as resRaw, s.createdAt as createdAt "+
             "from SearchCacheEntity s "+
-            "where s.name = :name and s.query = :query and s.sorder = :sorder "+
+            "where s.cacheKey = :cacheKey "+
                 "and :pageBegin <= s.page and s.page < :pageEnd "+
                 "and s.pageSize = :pageSize "+
             "order by s.page, s.createdAt desc")
     fun findAllRawResultForUpdate(
-        name: String,
-        query: String,
-        sorder: String,
+        cacheKey: ByteArray,
         pageBegin: Int,
         pageEnd: Int,
         pageSize: Int

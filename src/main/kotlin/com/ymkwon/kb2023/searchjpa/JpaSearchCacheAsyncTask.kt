@@ -1,9 +1,9 @@
-package com.ymkwon.kb2023.search.jpa
+package com.ymkwon.kb2023.searchjpa
 
 import com.ymkwon.kb2023.search.SearchCachePage
 import com.ymkwon.kb2023.search.SearchSession
-import com.ymkwon.kb2023.search.jpa.entity.SearchCacheEntity
-import com.ymkwon.kb2023.search.jpa.repository.SearchCacheRepository
+import com.ymkwon.kb2023.searchjpa.entity.SearchCacheEntity
+import com.ymkwon.kb2023.searchjpa.repository.SearchCacheRepository
 import mu.KotlinLogging
 import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Component
@@ -32,11 +32,9 @@ class JpaSearchCacheAsyncTask(
             cachePages.forEach {
                 cacheRepository.save(
                     SearchCacheEntity(
-                        name = searchSession.source.name,
-                        query = searchSession.query,
-                        sorder = searchSession.sorder.charCode,
+                        cacheKey = searchSession.cacheKey,
                         page = it.page,
-                        pageSize = searchSession.source.cachePageSize,
+                        pageSize = searchSession.request.source.cachePageSize,
                         resultRaw = it.resRaw
                     )
                 )

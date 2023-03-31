@@ -1,5 +1,6 @@
-package com.ymkwon.kb2023.api.v1.service.search.source.naver
+package com.ymkwon.kb2023.api.v1.service.search.blog.naver
 
+import com.ymkwon.kb2023.api.v1.service.search.blog.BlogSearchResultDocument
 import com.ymkwon.kb2023.config.ApplicationProperties
 import com.ymkwon.kb2023.search.*
 import com.ymkwon.kb2023.search.retriever.SimpleWebSearchRetriever
@@ -15,7 +16,7 @@ data class NaverBlogSearchSource(
         get() = appProperties.search.sources.naver.name
 
     override val url: String
-        get() = appProperties.search.sources.naver.url
+        get() = appProperties.search.sources.naver.blog.url
 
     override val headers: Map<String, String>
         get() = mapOf(
@@ -30,23 +31,4 @@ data class NaverBlogSearchSource(
 
     override val parser: SearchParser
         get() = searchParser
-
-    override val qsNameQuery: String
-        get() = "query"
-
-    override val qsNameSOrder: String
-        get() = "sort"
-
-    override val qsNamePage: String
-        get() = "start"
-
-    override val qsNamePageSize: String
-        get() = "display"
-
-    override fun qsSOrderValue(sorder: SearchOrder): String =
-        if (sorder == SearchOrder.LATEST)
-            "date"
-        else
-            "sim"
-
 }

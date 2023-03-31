@@ -1,14 +1,25 @@
-package com.ymkwon.kb2023.search.jpa.entity
+package com.ymkwon.kb2023.searchjpa.entity
 
 import org.hibernate.annotations.CreationTimestamp
+import java.io.Serializable
 import java.time.LocalDateTime
 import javax.persistence.*
 
+data class SearchQueryCountEntityId(
+    val category: String = "",
+    val query: String = ""
+): Serializable
+
 @Entity
 @Table(name = "tb_searchQueryCount")
+@IdClass(SearchQueryCountEntityId::class)
 class SearchQueryCountEntity(
     @Id
-    @Column(unique = true)
+    @Column
+    val category: String,
+
+    @Id
+    @Column
     val query: String,
 
     @Column(updatable = true)

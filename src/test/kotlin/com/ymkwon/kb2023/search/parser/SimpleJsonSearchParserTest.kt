@@ -1,7 +1,6 @@
 package com.ymkwon.kb2023.search.parser
 
-import com.ymkwon.kb2023.search.SearchCachePage
-import com.ymkwon.kb2023.search.SearchResultDocument
+import com.ymkwon.kb2023.api.v1.service.search.blog.BlogSearchResultDocument
 import com.ymkwon.kb2023.search.SearchTestUtil
 import com.ymkwon.kb2023.search.exception.SearchException
 import io.kotest.assertions.throwables.shouldThrow
@@ -11,21 +10,19 @@ import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import org.springframework.boot.test.context.SpringBootTest
-import java.time.LocalDate
 import java.time.LocalDateTime
-import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
-private val prefix = "t_"
+private const val testPrefix = "t_"
 private val toSearchResultDocument = { jsonItem: JSONObject ->
-    SearchResultDocument(
-        title = jsonItem.getString("${prefix}title"),
-        content = jsonItem.getString("${prefix}content"),
-        url = jsonItem.getString("${prefix}url"),
-        name = jsonItem.getString("${prefix}name"),
-        thumbnailUrl = jsonItem.getString("${prefix}thumbnailUrl"),
+    BlogSearchResultDocument(
+        title = jsonItem.getString("${testPrefix}title"),
+        content = jsonItem.getString("${testPrefix}content"),
+        url = jsonItem.getString("${testPrefix}url"),
+        name = jsonItem.getString("${testPrefix}name"),
+        thumbnailUrl = jsonItem.getString("${testPrefix}thumbnailUrl"),
         datetime = LocalDateTime.parse(
-            jsonItem.getString("${prefix}datetime"), DateTimeFormatter.ISO_LOCAL_DATE_TIME
+            jsonItem.getString("${testPrefix}datetime"), DateTimeFormatter.ISO_LOCAL_DATE_TIME
         )
     )
 }
@@ -75,7 +72,7 @@ class SimpleJsonSearchParserTest: FunSpec({
         var result = SimpleJsonSearchParser.parse(
                 page, cacheRowBeginOffset, cacheRowEndOffset, cachePageSize, cachePages, toSearchResultDocument)
 
-        true shouldBe SearchTestUtil.isDocumentJSONObjectListEqual(result, 5, 40, 0, 35)
+        true shouldBe SearchTestUtil.isDocumentJSONObjectListEqual(result, 5, 0, 35, SearchTestUtil.isBlogDocumentEqual)
 
         cachePageSize = 40
         cachePageCount = 2
@@ -84,7 +81,7 @@ class SimpleJsonSearchParserTest: FunSpec({
         result = SimpleJsonSearchParser.parse(
             page, cacheRowBeginOffset, cacheRowEndOffset, cachePageSize, cachePages, toSearchResultDocument)
 
-        true shouldBe SearchTestUtil.isDocumentJSONObjectListEqual(result, 5, 80, 0, 75)
+        true shouldBe SearchTestUtil.isDocumentJSONObjectListEqual(result, 5, 0, 75, SearchTestUtil.isBlogDocumentEqual)
 
         cachePageSize = 40
         cachePageCount = 10
@@ -93,7 +90,7 @@ class SimpleJsonSearchParserTest: FunSpec({
         result = SimpleJsonSearchParser.parse(
             page, cacheRowBeginOffset, cacheRowEndOffset, cachePageSize, cachePages, toSearchResultDocument)
 
-        true shouldBe SearchTestUtil.isDocumentJSONObjectListEqual(result, 5, 80, 0, 395)
+        true shouldBe SearchTestUtil.isDocumentJSONObjectListEqual(result, 5, 0, 395, SearchTestUtil.isBlogDocumentEqual)
     }
 
     test("normal cases - various cache page count") {
@@ -101,7 +98,7 @@ class SimpleJsonSearchParserTest: FunSpec({
         val cacheRowBeginOffset = 9
         val cacheRowEndOffset = 1
 
-        var cachePageSize = 71
+        val cachePageSize = 71
         var cachePageCount = 1  // begin offest > end offset in same page
         var cachePages = SearchTestUtil.createCachePageJSONArrayList(
             "t_", cachePageSize, cachePageCount)
@@ -116,7 +113,7 @@ class SimpleJsonSearchParserTest: FunSpec({
         var result = SimpleJsonSearchParser.parse(
             page, cacheRowBeginOffset, cacheRowEndOffset, cachePageSize, cachePages, toSearchResultDocument)
 
-        true shouldBe SearchTestUtil.isDocumentJSONObjectListEqual(result, 9, 72, 10, 63)
+        true shouldBe SearchTestUtil.isDocumentJSONObjectListEqual(result, 9, 10, 63, SearchTestUtil.isBlogDocumentEqual)
 
         cachePageCount = 5
         cachePages = SearchTestUtil.createCachePageJSONArrayList(
@@ -124,6 +121,6 @@ class SimpleJsonSearchParserTest: FunSpec({
         result = SimpleJsonSearchParser.parse(
             page, cacheRowBeginOffset, cacheRowEndOffset, cachePageSize, cachePages, toSearchResultDocument)
 
-        true shouldBe SearchTestUtil.isDocumentJSONObjectListEqual(result, 9, 72, 10, 276)
+        true shouldBe SearchTestUtil.isDocumentJSONObjectListEqual(result, 9, 10, 276, SearchTestUtil.isBlogDocumentEqual)
     }
 })

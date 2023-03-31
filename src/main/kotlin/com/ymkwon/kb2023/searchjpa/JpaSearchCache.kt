@@ -1,8 +1,7 @@
-package com.ymkwon.kb2023.search.jpa
+package com.ymkwon.kb2023.searchjpa
 
 import com.ymkwon.kb2023.search.*
-import com.ymkwon.kb2023.search.jpa.repository.SearchCacheRepository
-import mu.KotlinLogging
+import com.ymkwon.kb2023.searchjpa.repository.SearchCacheRepository
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
@@ -21,9 +20,7 @@ class JpaSearchCache(
     override fun query(searchSession: SearchSession): SearchCacheQueryResult? {
         val page0 = searchSession.page0
         val res = cacheRepository.findAllRawResultForUpdate(
-            searchSession.source.name, searchSession.query, searchSession.sorder.charCode,
-            page0.cachePageBegin, page0.cachePageEnd,
-            searchSession.source.cachePageSize)
+            searchSession.cacheKey, page0.cachePageBegin, page0.cachePageEnd, searchSession.request.source.cachePageSize)
         if (res.isEmpty())
             return null
         val expired = { createdAt: LocalDateTime, expiredAt: LocalDateTime -> createdAt < expiredAt }

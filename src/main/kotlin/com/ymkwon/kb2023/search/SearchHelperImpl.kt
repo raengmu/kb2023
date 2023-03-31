@@ -7,22 +7,16 @@ import org.springframework.stereotype.Component
 
 @Component
 class SearchHelperImpl(
-    private val sources: List<SearchSource>,
     private val cache: SearchCache,
     private val appProperties: ApplicationProperties
 ): SearchHelper {
 
-    override fun getResult(
-        query: String,
-        sorder: SearchOrder,
-        page: Int,
-        pageSize: Int
-    ): SearchResult? {
+    override fun getResult(requests: List<SearchRequest>): SearchResult? {
         var res: SearchResult? = null
-        for (source in sources) {
+        for (request in requests) {
             try {
                 res = getResultPerSource(
-                    getSession(source, query, sorder, SearchPage0(page, pageSize, source.cachePageSize)))
+                    getSession(request, SearchPage0(request.page, request.pageSize, request.source.cachePageSize)))
             } catch(ex: SearchException) {
                 // if resource retrieving or parsing failed,
                 // considered as source problem and retry with next source
@@ -41,7 +35,7 @@ class SearchHelperImpl(
         session: SearchSession
     ): SearchResult? {
         val resRaws: List<String>?
-        val source = session.source
+        val source = session.request.source
         try {
             var queryResult: SearchCacheQueryResult? = null
             val absentCachePages =
@@ -98,11 +92,9 @@ class SearchHelperImpl(
     }
 
     private fun getSession(
-        source: SearchSource,
-        query: String,
-        sorder: SearchOrder,
+        request: SearchRequest,
         page0: SearchPage0
     ): SearchSession {
-        return SearchSession(source, query, sorder, page0, appProperties.search.cacheExpireSec)
+        return SearchSession(request, page0, appProperties.search.cacheExpireSec)
     }
 }

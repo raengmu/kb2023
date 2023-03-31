@@ -11,3 +11,7 @@ spring:
     url: jdbc:h2:mem:blogSearch;DB_CLOSE_DELAY=-1
     username: sa
     password:
+
+logging:
+  level:
+    com.ymkwon.kb2023: DEBUG

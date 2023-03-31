@@ -1,5 +1,6 @@
-package com.ymkwon.kb2023.api.v1.service.search.source.naver
+package com.ymkwon.kb2023.api.v1.service.search.blog.naver
 
+import com.ymkwon.kb2023.api.v1.service.search.blog.BlogSearchResultDocument
 import com.ymkwon.kb2023.search.parser.SimpleJsonSearchParser
 import com.ymkwon.kb2023.search.*
 import org.json.JSONArray
@@ -21,10 +22,10 @@ class NaverBlogSearchParser: SearchParser {
             searchSession.page0.page,
             searchSession.page0.cacheRowBeginOffset,
             searchSession.page0.cacheRowEndOffset,
-            searchSession.source.cachePageSize,
+            searchSession.request.source.cachePageSize,
             List<JSONArray>(raws.size) { JSONObject(raws[it]).getJSONArray("items") }
         ) { jsonItem: JSONObject ->
-            SearchResultDocument(
+            BlogSearchResultDocument(
                 title = jsonItem.getString("title"),
                 content = jsonItem.getString("description"),
                 url = jsonItem.getString("link"),

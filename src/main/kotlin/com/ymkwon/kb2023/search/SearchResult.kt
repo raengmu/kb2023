@@ -4,5 +4,5 @@ class SearchResult(
     //TODO: impl isEnd?
     val page: Int,
     val pageSize: Int,
-    val documents: List<SearchResultDocument>
+    val documents: List<Any>
 )

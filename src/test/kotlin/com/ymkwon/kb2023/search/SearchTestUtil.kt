@@ -1,5 +1,6 @@
 package com.ymkwon.kb2023.search
 
+import com.ymkwon.kb2023.api.v1.service.search.blog.BlogSearchResultDocument
 import org.json.JSONArray
 import org.json.JSONObject
 import java.time.LocalDate
@@ -40,13 +41,16 @@ class SearchTestUtil {
                             DateTimeFormatter.BASIC_ISO_DATE), LocalTime.MIDNIGHT)
 
 
-        private fun isDocumentEqual(a: SearchResultDocument, idx: Int): Boolean =
-                    a.title == "$idx:title" &&
-                    a.content == "$idx:content" &&
-                    a.url == "$idx:url" &&
-                    a.name == "$idx:name" &&
-                    a.thumbnailUrl == "$idx:thumbnailUrl" &&
-                    a.datetime == getDocumentDateTime(idx)
+        val isBlogDocumentEqual = { a: Any, idx: Int ->
+            with(a as BlogSearchResultDocument) {
+                title == "$idx:title" &&
+                content == "$idx:content" &&
+                url == "$idx:url" &&
+                name == "$idx:name" &&
+                thumbnailUrl == "$idx:thumbnailUrl" &&
+                datetime == getDocumentDateTime(idx)
+            }
+        }
 
 //        private fun isDocumentJSONObjectEqual(prefix: String, a: SearchResultDocument, idx: Int): Boolean =
 //            a.getString("${prefix}title") == "$idx:title" &&
@@ -59,9 +63,9 @@ class SearchTestUtil {
         fun isDocumentJSONObjectListEqual(
             result: SearchResult,
             begin: Int,
-            end: Int,
             page: Int,
-            pageSize: Int
+            pageSize: Int,
+            equal: (Any, Int) -> Boolean
         ): Boolean {
             if (result.page != (page+1))
                 return false
@@ -72,7 +76,7 @@ class SearchTestUtil {
                 return false
             var idx = begin
             for(doc in docs) {
-                if (!isDocumentEqual(doc, idx))
+                if (!equal(doc, idx))
                     return false
                 ++idx
             }

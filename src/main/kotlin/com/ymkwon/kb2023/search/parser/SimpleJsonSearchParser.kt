@@ -1,7 +1,6 @@
 package com.ymkwon.kb2023.search.parser
 
 import com.ymkwon.kb2023.search.SearchResult
-import com.ymkwon.kb2023.search.SearchResultDocument
 import com.ymkwon.kb2023.search.exception.SearchException
 import com.ymkwon.kb2023.search.exception.SearchExceptionCode
 import org.json.JSONArray
@@ -15,13 +14,13 @@ class SimpleJsonSearchParser {
             cacheRowEndOffset: Int,
             cachePageSize: Int,
             jsonItemsList: List<JSONArray>,
-            toSearchResultDocument: (jsonItem: JSONObject) -> SearchResultDocument
+            jsonItemConverter: (jsonItem: JSONObject) -> Any
         ): SearchResult {
             if (jsonItemsList.isEmpty() || (jsonItemsList.size < 2 && cacheRowBeginOffset > cacheRowEndOffset))
                 throw SearchException(SearchExceptionCode.PARSING_ERROR, "assert failed",
                     "item size:${jsonItemsList.size}, cacheRowBeginOffset:$cacheRowBeginOffset, cacheRowEndOffset:$cacheRowEndOffset")
 
-            val documents = ArrayList<SearchResultDocument>()
+            val documents = ArrayList<Any>()
 
             // first
             val rowEndOffset =
@@ -31,20 +30,20 @@ class SimpleJsonSearchParser {
                     cacheRowEndOffset
             var docs = jsonItemsList[0]
             for(i in cacheRowBeginOffset until rowEndOffset)
-                documents.add(toSearchResultDocument(docs.getJSONObject(i)))
+                documents.add(jsonItemConverter(docs.getJSONObject(i)))
 
             // middle
             for(i in 1 until jsonItemsList.size-1) {
                 docs = jsonItemsList[i]
                 for(j in 0 until cachePageSize)
-                    documents.add(toSearchResultDocument(docs.getJSONObject(j)))
+                    documents.add(jsonItemConverter(docs.getJSONObject(j)))
             }
 
             // last
             if (jsonItemsList.size > 1){
                 docs = jsonItemsList.last()
                 for(i in 0 until cacheRowEndOffset)
-                    documents.add(toSearchResultDocument(docs.getJSONObject(i)))
+                    documents.add(jsonItemConverter(docs.getJSONObject(i)))
             }
 
             return SearchResult(

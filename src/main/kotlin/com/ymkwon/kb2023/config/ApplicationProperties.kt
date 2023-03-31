@@ -24,16 +24,25 @@ data class ApplicationProperties(
             data class KakaoProperties(
                 val name: String,
                 val cachePageSize: Int,
-                val url: String,
-                val restApiKey: String
+                val restApiKey: String,
+                val blog: Blog,
+                val book: Book
             )
 
             data class NaverProperties(
                 val name: String,
                 val cachePageSize: Int,
-                val url: String,
                 val clientId: String,
-                val clientSecret: String
+                val clientSecret: String,
+                val blog: Blog
+            )
+
+            data class Blog(
+                val url: String
+            )
+
+            data class Book(
+                val url: String
             )
         }
     }

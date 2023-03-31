@@ -18,13 +18,14 @@ import java.util.*
 class SimpleWebSearchRetriever(
     private val webClientConfig: WebClientConfig
 ): SearchRetriever {
+    //private val logger = KotlinLogging.logger {}
+
     override fun retrieve(
         searchSession: SearchSession,
         absentCachePages: Set<Int>
     ): SortedSet<SearchCachePage>? {
         //TODO: connection pool?
-        //TODO: multiple requests asynchronously?
-        val source = searchSession.source
+        val source = searchSession.request.source
         val cachePages = TreeSet<SearchCachePage>()
         try {
             val webClient = webClientConfig
@@ -39,18 +40,18 @@ class SimpleWebSearchRetriever(
                 pageIdx[i] = page0
                 monoArr[i] = webClient.mutate().build()
                     .get()
-                    .uri { it
-                        .queryParam(source.qsNameQuery, searchSession.query)
-                        .queryParam(source.qsNameSOrder, source.qsSOrderValue(searchSession.sorder))
-                        .queryParam(source.qsNamePage, page0 + 1)
-                        .queryParam(source.qsNamePageSize, source.cachePageSize)
-                        .build()
+                    .uri {
+                        var uriBuilder = it
+                        for((k, v) in searchSession.request.fixedQueryParams())
+                            uriBuilder = uriBuilder.queryParam(k, v)
+                        for((k, v) in searchSession.request.pagedQueryParams(page0, searchSession.request.source.cachePageSize))
+                            uriBuilder = uriBuilder.queryParam(k, v)
+                        uriBuilder.build()
                     }
                     .accept(MediaType.APPLICATION_JSON)
                     .retrieve()
                     .bodyToMono(String::class.java).subscribeOn(Schedulers.boundedElastic())
             }
-            val results = Array<String?>(pageIdx.size) { null }
             monoArr.forEachIndexed { i, mono ->
                 cachePages.add(SearchCachePage(pageIdx[i], mono?.block()
                     ?: throw SearchException(

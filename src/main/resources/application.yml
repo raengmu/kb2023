@@ -17,13 +17,17 @@ properties:
       kakao:
         name: kakao
         cachePageSize: 50
-        url: https://dapi.kakao.com/v2/search/blog
         restApiKey: KakaoAK d8831ca9fce59bb328e9bd160e28ec2b
+        blog:
+          url: https://dapi.kakao.com/v2/search/blog
+        book:
+          url: https://dapi.kakao.com/v3/search/book
       naver:
         name: naver
         cachePageSize: 100
-        url: https://openapi.naver.com/v1/search/blog.json
         clientId: H4k64gJBoxn066T7pfjd
         clientSecret: J_5tDKIwWL
+        blog:
+          url: https://openapi.naver.com/v1/search/blog.json
   asyncTaskPool:
     maxPoolSize: 8

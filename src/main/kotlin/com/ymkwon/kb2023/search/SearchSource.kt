@@ -7,9 +7,5 @@ interface SearchSource {
     val cachePageSize: Int
     val retriever: SearchRetriever
     val parser: SearchParser
-    val qsNameQuery: String
-    val qsNameSOrder: String
-    val qsNamePage: String
-    val qsNamePageSize: String
-    fun qsSOrderValue(sorder: SearchOrder): String
+    fun isCacheEnabled(): Boolean = cachePageSize > 0
 }
