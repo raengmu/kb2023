@@ -8,9 +8,10 @@ import org.springframework.stereotype.Component
 @Component
 class SearchHelperImpl(
     private val cache: SearchCache,
-    private val appProperties: ApplicationProperties
+    private val appProperties: ApplicationProperties,
+    private val searchRetriever: SearchRetriever,
+    private val searchParser: SearchParser
 ): SearchHelper {
-
     override fun getResult(requests: List<SearchRequest>): SearchResult? {
         var res: SearchResult? = null
         for (request in requests) {
@@ -58,7 +59,8 @@ class SearchHelperImpl(
             }
             resRaws = if (absentCachePages.isNotEmpty()) {
                 // retrieve result and store to cache
-                val cachePages = source.retriever.retrieve(session, absentCachePages)?:
+                val retriever = if (source.retriever == null) searchRetriever else source.retriever
+                val cachePages = retriever!!.retrieve(session, absentCachePages)?:
                         throw SearchException(SearchExceptionCode.FAILED_RETRIEVE_RESOURCE,
                                               "no cache page retrieve", "session: $session")
                 if (appProperties.search.enableCache) {
@@ -84,7 +86,7 @@ class SearchHelperImpl(
 
         try {
             if (resRaws != null)
-                return source.parser.parse(session, resRaws)
+                return searchParser.parse(session, resRaws)
         } catch(ex: Exception) {
             throw SearchException(SearchExceptionCode.PARSING_ERROR, "failed to parse", "session: $session")
         }

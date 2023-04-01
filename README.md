@@ -98,6 +98,7 @@ $ java -jar build/libs/kb2023-0.0.1-SNAPSHOT.jar
 
 3. 기타
    * (완료) 최대한 검색 기능 일반화 하여 글, 카페, 책 검색에도 공통으로 사용할 수 있도록 설계 및 구성
+     * 예로 책 검색 추가
 
 4. TODO:
    * 검색 기능 외부 서비스 API 접근 추가 최적화
@@ -128,7 +129,8 @@ $ java -jar build/libs/kb2023-0.0.1-SNAPSHOT.jar
         * Blog 뿐 아니라 다른 search 에서도 사용 가능토록(또는 일반적인 API 처리)
     * (완료) 구현부 구조 최적화
       -> searchjpa, api.v1.service.searchjpa 로 JPA 구현부 이동 및 api.v1.service.config 에서 injection 설정
-    * WebMvcConfigurer.addCorsMappings override to allow origins/paths/methods/headers
+    * (완료) search cache의 가변 길이 key를(source 정보 및 http fixed query params concate) md5로 16bytes로 고정하여 DB 접근 성능 및 용량 절약 
+    * (완료) WebMvcConfigurer.addCorsMappings override to allow origins/paths/methods/headers
     * Kakao 나 Naver API key 은폐
 
 ---
@@ -239,6 +241,96 @@ curl -v -X GET "http://localhost:8080/v1/search/blog/countTop"
     },
     ...
 ]
+```
+
+---
+
+### 서적 검색
+
+```agsl
+GET /v1/search/book HTTP/1.1
+```
+국내 서적 검색 서비스 API들을 이용해 서적 검색 결과를 출력합니다.
+
+#### Request parameters
+| Name     | Type    | Description                                  | Required |
+|----------|---------|----------------------------------------------|----------|
+| query    | String  | 검색을 원하는 질의어                                  | O        |
+| order    | String  | 결과 문서 정렬 방식, 'A'(정확도순) 또는 'L'(최신순), 기본 값 'A' | X        |
+| page     | Integer | 결과 페이지 번호, 1 이상, 기본 값 1                      | X        |
+| pageSize | Integer | 한 페이지에 보여질 문서 수, 1 이상, 기본 값 10               | X        |
+| target   | String  | 'T': 제목, 'I': ISBN, 'P': 출판사, 'E': 인명, 기본 값 'T'      | X        |
+
+#### Response
+
+| Name | Type    | Description |
+|---|---------|-------------|
+| page | Integer | 결과 페이지 번호   |
+| pageSize | Integer | 결과 페이지 문서 수 |
+| documents | Array   | 문서 객체 목록    |
+
+##### documents
+
+| Name         | Type     | Description                                      |
+|--------------|----------|--------------------------------------------------|
+| title        | String   | 제목                                               |
+| contents     | String   | 소개                                               |
+| url          | String   | 도서 상세 URL                                        |
+| isbn         | String   | ISBN                                             |
+| thumbnail | String   | 썸네일 URL                                          |
+| datetime     | String   | 출판날짜(검색결과 그대로) `[YYYY]-[MM]-[DD]T[hh]:[mm]:[ss]` |
+| authors | String[] | 저자                                               |
+| publisher | String   | 출판사                                              |
+| translators | String[] | 번역자                                              |
+| price | Integer  | 정상가                                              |
+| sale_price |    Integer      | 판매가                                              |
+| status | String   | 판매 상태 정보 (정상, 품절, 절판 등)                          |
+
+#### Sample
+
+```agsl
+curl -v -X GET "http://localhost:8080/v1/search/book/?query=test&page=2&pageSize=50&order=A&target=T"
+```
+```
+{
+    "page": 2,
+    "pageSize": 50,
+    "documents": [
+        {
+            "authors": [
+                "Hammitt Gene M (EDT)/ Mouat Ricardo Gutierrez"
+            ],
+            "translators": [],
+            "isbn": "0738602523 9780738602523",
+            "priceKrw": 30250,
+            "priceDiscountedKrw": 23310,
+            "publisher": "Research & Education",
+            "title": "Best Test Preparation for the SAT Subject Test Spanish, 5/e",
+            "content": "",
+            "url": "https://search.daum.net/search?w=bookpage&bookId=2222884&q=Best+Test+Preparation+for+the+SAT+Subject+Test+Spanish%2C+5%2Fe",
+            "status": "정상판매",
+            "thumbnailUrl": "https://search1.kakaocdn.net/thumb/R120x174.q85/?fname=http%3A%2F%2Ft1.daumcdn.net%2Flbook%2Fimage%2F2222884%3Ftimestamp%3D20190213051936",
+            "datetime": "2008-01-08T00:00:00"
+        },
+        {
+            "authors": [
+                "Hutton Rosalie"
+            ],
+            "translators": [],
+            "isbn": "0857254855 9780857254856",
+            "priceKrw": 35970,
+            "priceDiscountedKrw": 34420,
+            "publisher": "Learning Matters",
+            "title": "Passing the National Admissions Test for Law (Lnat) Test for Law (Lnat)",
+            "content": "",
+            "url": "https://search.daum.net/search?w=bookpage&bookId=3165214&q=Passing+the+National+Admissions+Test+for+Law+%28Lnat%29+Test+for+Law+%28Lnat%29",
+            "status": "정상판매",
+            "thumbnailUrl": "https://search1.kakaocdn.net/thumb/R120x174.q85/?fname=http%3A%2F%2Ft1.daumcdn.net%2Flbook%2Fimage%2F3165214%3Ftimestamp%3D20190218050412",
+            "datetime": "2014-04-23T00:00:00"
+        },
+        ...
+    ]
+}
 ```
 
 ---

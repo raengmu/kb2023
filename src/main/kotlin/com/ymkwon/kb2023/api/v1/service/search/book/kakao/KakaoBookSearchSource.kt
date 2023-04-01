@@ -2,13 +2,11 @@ package com.ymkwon.kb2023.api.v1.service.search.book.kakao
 
 import com.ymkwon.kb2023.config.ApplicationProperties
 import com.ymkwon.kb2023.search.*
-import com.ymkwon.kb2023.search.retriever.SimpleWebSearchRetriever
 import org.springframework.stereotype.Component
 
 @Component
 data class KakaoBookSearchSource(
-    private val searchRetriver: SimpleWebSearchRetriever,
-    private val searchParser: KakaoBookSearchParser,
+    private val searchParserMapper: KakaoBookSearchParserMapper,
     private val appProperties: ApplicationProperties
 ) : SearchSource {
     override val name: String
@@ -24,9 +22,6 @@ data class KakaoBookSearchSource(
     override val cachePageSize: Int
         get() = appProperties.search.sources.kakao.cachePageSize
 
-    override val retriever: SearchRetriever
-        get() = searchRetriver
-
-    override val parser: SearchParser
-        get() = searchParser
+    override val parserMapper: SearchParserMapper
+        get() = searchParserMapper
 }

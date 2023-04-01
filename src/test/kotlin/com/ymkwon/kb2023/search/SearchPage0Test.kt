@@ -1,6 +1,6 @@
 package com.ymkwon.kb2023.search
 
-import com.ymkwon.kb2023.exception.CommonException
+import com.ymkwon.kb2023.search.exception.SearchException
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
@@ -9,15 +9,15 @@ import org.springframework.boot.test.context.SpringBootTest
 @SpringBootTest
 class SearchPage0Test: FunSpec({
     test("invalid parameters") {
-        shouldThrow<CommonException> {
+        shouldThrow<SearchException> {
             SearchPage0(
                 -1, 200, 30)
         }
-        shouldThrow<CommonException> {
+        shouldThrow<SearchException> {
             SearchPage0(
                 0, 0, 30)
         }
-        shouldThrow<CommonException> {
+        shouldThrow<SearchException> {
             SearchPage0(
                 0, 200, 0)
         }

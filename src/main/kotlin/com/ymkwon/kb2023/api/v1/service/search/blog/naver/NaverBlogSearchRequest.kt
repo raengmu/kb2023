@@ -1,7 +1,6 @@
 package com.ymkwon.kb2023.api.v1.service.search.blog.naver
 
 import com.ymkwon.kb2023.api.v1.service.search.blog.BlogSearchRequest
-import com.ymkwon.kb2023.api.v1.service.search.blog.BlogSearchResultDocument
 import com.ymkwon.kb2023.search.SearchOrder
 import com.ymkwon.kb2023.search.SearchRequest
 import com.ymkwon.kb2023.search.SearchSource

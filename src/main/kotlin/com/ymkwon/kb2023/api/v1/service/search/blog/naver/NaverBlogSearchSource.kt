@@ -1,15 +1,12 @@
 package com.ymkwon.kb2023.api.v1.service.search.blog.naver
 
-import com.ymkwon.kb2023.api.v1.service.search.blog.BlogSearchResultDocument
 import com.ymkwon.kb2023.config.ApplicationProperties
 import com.ymkwon.kb2023.search.*
-import com.ymkwon.kb2023.search.retriever.SimpleWebSearchRetriever
 import org.springframework.stereotype.Component
 
 @Component
 data class NaverBlogSearchSource(
-    private val searchRetriver: SimpleWebSearchRetriever,
-    private val searchParser: NaverBlogSearchParser,
+    private val searchParserMapper: NaverBlogSearchParserMapper,
     private val appProperties: ApplicationProperties,
 ) : SearchSource {
     override val name: String
@@ -26,9 +23,6 @@ data class NaverBlogSearchSource(
     override val cachePageSize: Int
         get() = appProperties.search.sources.naver.cachePageSize
 
-    override val retriever: SearchRetriever
-        get() = searchRetriver
-
-    override val parser: SearchParser
-        get() = searchParser
+    override val parserMapper: SearchParserMapper
+        get() = searchParserMapper
 }

@@ -2,6 +2,8 @@ package com.ymkwon.kb2023.search
 
 import com.ymkwon.kb2023.exception.CommonException
 import com.ymkwon.kb2023.exception.CommonExceptionCode
+import com.ymkwon.kb2023.search.exception.SearchException
+import com.ymkwon.kb2023.search.exception.SearchExceptionCode
 
 class SearchPage0(
     page0: Int,
@@ -25,7 +27,7 @@ class SearchPage0(
 
     init {
         if  (page0 < 0 || page0Size < 1 || cachePageSize < 1)
-            throw CommonException(CommonExceptionCode.INVALID_PARAMETER,
+            throw SearchException(SearchExceptionCode.ASSERT_FAILED,
                 "failed to initialize search page0",
                 "page calc - page0=$page0, page0Size=$page0Size")
 

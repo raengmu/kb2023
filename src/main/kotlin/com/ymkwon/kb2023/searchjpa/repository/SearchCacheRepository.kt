@@ -12,13 +12,13 @@ import java.time.LocalDateTime
 @Repository
 interface SearchCacheRepository: JpaRepository<SearchCacheEntity, Long> {
 
-    //ATTENTION: SHOULD be ordered by createAt to remove dup page items in after-processing
+    //ATTENTION: SHOULD be ordered by id(createAt) to remove dup page items in after-processing
     @Query("select s.page as page, s.resultRaw as resRaw, s.createdAt as createdAt "+
             "from SearchCacheEntity s "+
             "where s.cacheKey = :cacheKey "+
                 "and :pageBegin <= s.page and s.page < :pageEnd "+
                 "and s.pageSize = :pageSize "+
-            "order by s.page, s.createdAt desc")
+            "order by s.page, s.id desc")
     fun findAllRawResultForUpdate(
         cacheKey: ByteArray,
         pageBegin: Int,

@@ -1,4 +1,4 @@
-package com.ymkwon.kb2023.search.retriever
+package com.ymkwon.kb2023.api.v1.service.search.retriever
 
 import com.ymkwon.kb2023.config.WebClientConfig
 import com.ymkwon.kb2023.search.SearchCachePage
@@ -15,7 +15,7 @@ import reactor.core.scheduler.Schedulers
 import java.util.*
 
 @Component
-class SimpleWebSearchRetriever(
+class SimpleJsonWebSearchRetriever(
     private val webClientConfig: WebClientConfig
 ): SearchRetriever {
     //private val logger = KotlinLogging.logger {}
