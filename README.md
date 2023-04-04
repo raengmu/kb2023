@@ -103,17 +103,26 @@ $ java -jar build/libs/kb2023-0.0.1-SNAPSHOT.jar
 4. TODO:
    * 검색 기능 외부 서비스 API 접근 추가 최적화
      * WebClient의 connection pool 사용 고려
+       이미 기본 connection pool 동작 - connection pool 설정 study
+     * (완료) PerfJsonWebSearchRetriever 추가
+       SimpleJsonWebSearchRetriever의 multiplexing에 parallelStream 이용한 동시 request 처리
+       대략 50 cache page size로 300개 페이지 요청시 300/50=6번의 request를 하는데,
+       localhost에서 Postman 사용시 Simple이 600~1200msec 의 시간이 걸리던 것을 400~700msec 이하로 개선 
+       실 서비스에서는 source service 의 동시 connection 제약 확인 필요 
    * 검색 기능 cache page json string(raw) data를 parsing 된 serialized 데이타로 변경 고려
+     단순 TC로 raw json object -> json reponse object ..vs.. serialized object -> json reponse object 측정하여 간접 비교 가능
    * (완료) countTop 성능 최적화
      * 검색이 요청될때마다 insert/select(update) 하도록 되어 있는데,
        async로 동작한다 하더라도 검색 횟수만큼 부하가 커지므로 부하가 발생시 문제가 될 수 있다.
      * 일반적으로 검색어 순위의 정확도는 시차를 두고 반영되어도 문제가 없을 것으로 보이므로,
        가능하다면 이러한 시차 제약사항을 이용해 각 WAS의 process들이 검색어를 집계해 일정 시간마다 한번에 DB에 반영하도록 한다.
-       -> @EnableSchedule 로 cron 작업 설정
+       @EnableSchedule 로 cron 작업 설정
    * (완료) countTop 부문별 적용
      * 검색 기능과 마찬가지로 부문별 검색 count 집계 가능토록 재구조화 필요
    * 추후 검색 및 countTop 기능의 부하가 커져 감당할 수 없는 경우 고려
      * cache DB 및 WAS를 scale out 하는 것을 고려한 POJO 재설계 및 유지보수 필요
+       * 1차 캐시를 WAS내 mem DB를 활용한 수준이며, scale out 을 위해서는 추가 DB 필요(2차 캐시로 볼 수 있음)
+         따라서 2차 캐시 사용하는 DB의 operation을 위한 POJO의 template method 정의 또는 2차 캐시 루틴 injection 필요
      * 성능에 영향을 미치는 구성요소의 대체재들의 성능 및 안정성 PoC 및 benchmarking
    * TC 추가
      * SearchHelperImpl 및 기타 외부 연관부

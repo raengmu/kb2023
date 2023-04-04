@@ -17,13 +17,11 @@ interface SearchCacheRepository: JpaRepository<SearchCacheEntity, Long> {
             "from SearchCacheEntity s "+
             "where s.cacheKey = :cacheKey "+
                 "and :pageBegin <= s.page and s.page < :pageEnd "+
-                "and s.pageSize = :pageSize "+
             "order by s.page, s.id desc")
-    fun findAllRawResultForUpdate(
+    fun findAllRawResult(
         cacheKey: ByteArray,
         pageBegin: Int,
-        pageEnd: Int,
-        pageSize: Int
+        pageEnd: Int
     ): List<SearchCacheResultRawDto>
 
     @Transactional

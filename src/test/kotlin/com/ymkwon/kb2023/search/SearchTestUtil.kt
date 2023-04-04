@@ -1,6 +1,6 @@
 package com.ymkwon.kb2023.search
 
-import com.ymkwon.kb2023.api.v1.service.search.blog.BlogSearchResultDocument
+import com.ymkwon.kb2023.api.v1.service.search.domain.blog.BlogSearchResultDocument
 import com.ymkwon.kb2023.api.v1.service.search.parser.SimpleJsonSearchParser
 import org.json.JSONArray
 import org.json.JSONObject

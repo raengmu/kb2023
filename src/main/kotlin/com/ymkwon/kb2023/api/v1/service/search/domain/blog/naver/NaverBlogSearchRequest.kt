@@ -1,13 +1,13 @@
-package com.ymkwon.kb2023.api.v1.service.search.blog.naver
+package com.ymkwon.kb2023.api.v1.service.search.domain.blog.naver
 
-import com.ymkwon.kb2023.api.v1.service.search.blog.BlogSearchRequest
+import com.ymkwon.kb2023.api.v1.service.search.request.CommonSearchRequest
 import com.ymkwon.kb2023.search.SearchOrder
 import com.ymkwon.kb2023.search.SearchRequest
 import com.ymkwon.kb2023.search.SearchSource
 
 class NaverBlogSearchRequest(
     override val source: SearchSource,
-    private val request: BlogSearchRequest
+    private val request: CommonSearchRequest
 ) : SearchRequest {
     override val page: Int
         get() = request.page

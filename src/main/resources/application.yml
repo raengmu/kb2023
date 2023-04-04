@@ -2,6 +2,11 @@ spring:
   profiles:
     default: dev
 
+logging:
+  level:
+    reactor:
+      netty: debug
+
 properties:
   api:
     version: v1
@@ -15,7 +20,6 @@ properties:
     maxQueryPageSize: 300
     sources:
       kakao:
-        name: kakao
         cachePageSize: 50
         restApiKey: KakaoAK d8831ca9fce59bb328e9bd160e28ec2b
         blog:
@@ -23,7 +27,6 @@ properties:
         book:
           url: https://dapi.kakao.com/v3/search/book
       naver:
-        name: naver
         cachePageSize: 100
         clientId: H4k64gJBoxn066T7pfjd
         clientSecret: J_5tDKIwWL

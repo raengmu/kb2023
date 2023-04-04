@@ -19,8 +19,8 @@ class JpaSearchCache(
     @Transactional
     override fun query(searchSession: SearchSession): SearchCacheQueryResult? {
         val page0 = searchSession.page0
-        val res = cacheRepository.findAllRawResultForUpdate(
-            searchSession.cacheKey, page0.cachePageBegin, page0.cachePageEnd, searchSession.request.source.cachePageSize)
+        val res = cacheRepository.findAllRawResult(
+            searchSession.cacheKey, page0.cachePageBegin, page0.cachePageEnd)
         if (res.isEmpty())
             return null
         val expired = { createdAt: LocalDateTime, expiredAt: LocalDateTime -> createdAt < expiredAt }

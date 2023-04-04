@@ -22,7 +22,6 @@ data class ApplicationProperties(
             val naver: NaverProperties
         ) {
             data class KakaoProperties(
-                val name: String,
                 val cachePageSize: Int,
                 val restApiKey: String,
                 val blog: Blog,
@@ -30,7 +29,6 @@ data class ApplicationProperties(
             )
 
             data class NaverProperties(
-                val name: String,
                 val cachePageSize: Int,
                 val clientId: String,
                 val clientSecret: String,

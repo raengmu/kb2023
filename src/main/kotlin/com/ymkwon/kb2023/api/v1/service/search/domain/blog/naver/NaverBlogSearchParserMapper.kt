@@ -1,6 +1,6 @@
-package com.ymkwon.kb2023.api.v1.service.search.blog.naver
+package com.ymkwon.kb2023.api.v1.service.search.domain.blog.naver
 
-import com.ymkwon.kb2023.api.v1.service.search.blog.BlogSearchResultDocument
+import com.ymkwon.kb2023.api.v1.service.search.domain.blog.BlogSearchResultDocument
 import com.ymkwon.kb2023.search.*
 import org.springframework.stereotype.Component
 import java.time.LocalDate

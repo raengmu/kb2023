@@ -1,4 +1,4 @@
-package com.ymkwon.kb2023.api.v1.service.search.blog
+package com.ymkwon.kb2023.api.v1.service.search.domain.blog
 
 import java.time.LocalDateTime
 

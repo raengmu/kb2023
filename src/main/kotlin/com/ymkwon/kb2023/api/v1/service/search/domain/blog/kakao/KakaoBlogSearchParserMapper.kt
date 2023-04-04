@@ -1,6 +1,6 @@
-package com.ymkwon.kb2023.api.v1.service.search.blog.kakao
+package com.ymkwon.kb2023.api.v1.service.search.domain.blog.kakao
 
-import com.ymkwon.kb2023.api.v1.service.search.blog.BlogSearchResultDocument
+import com.ymkwon.kb2023.api.v1.service.search.domain.blog.BlogSearchResultDocument
 import com.ymkwon.kb2023.search.*
 import org.springframework.stereotype.Component
 import java.time.LocalDateTime

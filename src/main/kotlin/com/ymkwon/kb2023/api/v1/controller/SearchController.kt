@@ -1,16 +1,16 @@
 package com.ymkwon.kb2023.api.v1.controller
 
 import com.ymkwon.kb2023.api.v1.service.search.AsyncSearchQueryCountAccumulator
-import com.ymkwon.kb2023.api.v1.service.search.blog.BlogSearchRequest
-import com.ymkwon.kb2023.api.v1.service.search.blog.kakao.KakaoBlogSearchRequest
-import com.ymkwon.kb2023.api.v1.service.search.blog.kakao.KakaoBlogSearchSource
-import com.ymkwon.kb2023.api.v1.service.search.blog.naver.NaverBlogSearchRequest
-import com.ymkwon.kb2023.api.v1.service.search.blog.naver.NaverBlogSearchSource
-import com.ymkwon.kb2023.api.v1.service.search.book.BookSearchRequest
-import com.ymkwon.kb2023.api.v1.service.search.book.BookSearchTarget
-import com.ymkwon.kb2023.api.v1.service.search.book.kakao.KakaoBookSearchRequest
-import com.ymkwon.kb2023.api.v1.service.search.book.kakao.KakaoBookSearchSource
+import com.ymkwon.kb2023.api.v1.service.search.domain.blog.kakao.KakaoBlogSearchRequest
+import com.ymkwon.kb2023.api.v1.service.search.domain.blog.kakao.KakaoBlogSearchSource
+import com.ymkwon.kb2023.api.v1.service.search.domain.blog.naver.NaverBlogSearchRequest
+import com.ymkwon.kb2023.api.v1.service.search.domain.blog.naver.NaverBlogSearchSource
+import com.ymkwon.kb2023.api.v1.service.search.domain.book.BookSearchRequest
+import com.ymkwon.kb2023.api.v1.service.search.domain.book.BookSearchTarget
+import com.ymkwon.kb2023.api.v1.service.search.domain.book.kakao.KakaoBookSearchRequest
+import com.ymkwon.kb2023.api.v1.service.search.domain.book.kakao.KakaoBookSearchSource
 import com.ymkwon.kb2023.api.v1.service.config.SearchServiceConfig
+import com.ymkwon.kb2023.api.v1.service.search.request.CommonSearchRequest
 import com.ymkwon.kb2023.config.ApplicationProperties
 import com.ymkwon.kb2023.exception.CommonException
 import com.ymkwon.kb2023.exception.CommonExceptionCode
@@ -45,7 +45,7 @@ class SearchController(
 
         asyncSearchQueryCountAccumulator.accumulateQueryCount(searchServiceConfig.blogSearchService, query)
 
-        val request = BlogSearchRequest(
+        val request = CommonSearchRequest(
             query =  query,
             page = page - 1,
             pageSize = pageSize,

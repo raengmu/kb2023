@@ -1,7 +1,7 @@
-package com.ymkwon.kb2023.api.v1.service.search.book.kakao
+package com.ymkwon.kb2023.api.v1.service.search.domain.book.kakao
 
-import com.ymkwon.kb2023.api.v1.service.search.book.BookSearchRequest
-import com.ymkwon.kb2023.api.v1.service.search.book.BookSearchTarget
+import com.ymkwon.kb2023.api.v1.service.search.domain.book.BookSearchRequest
+import com.ymkwon.kb2023.api.v1.service.search.domain.book.BookSearchTarget
 import com.ymkwon.kb2023.search.SearchOrder
 import com.ymkwon.kb2023.search.SearchRequest
 import com.ymkwon.kb2023.search.SearchSource

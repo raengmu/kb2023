@@ -1,6 +1,6 @@
 package com.ymkwon.kb2023.search.parser
 
-import com.ymkwon.kb2023.api.v1.service.search.blog.BlogSearchResultDocument
+import com.ymkwon.kb2023.api.v1.service.search.domain.blog.BlogSearchResultDocument
 import com.ymkwon.kb2023.search.SearchTestUtil
 import com.ymkwon.kb2023.search.TestSearchParserMapper
 import com.ymkwon.kb2023.search.exception.SearchException
@@ -14,18 +14,6 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 private const val testPrefix = "t_"
-private val toSearchResultDocument = { jsonItem: JSONObject ->
-    BlogSearchResultDocument(
-        title = jsonItem.getString("${testPrefix}title"),
-        content = jsonItem.getString("${testPrefix}content"),
-        url = jsonItem.getString("${testPrefix}url"),
-        name = jsonItem.getString("${testPrefix}name"),
-        thumbnailUrl = jsonItem.getString("${testPrefix}thumbnailUrl"),
-        datetime = LocalDateTime.parse(
-            jsonItem.getString("${testPrefix}datetime"), DateTimeFormatter.ISO_LOCAL_DATE_TIME
-        )
-    )
-}
 private val parserMapper = TestSearchParserMapper("documents", testPrefix)
 
 @SpringBootTest

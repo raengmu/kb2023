@@ -1,8 +1,8 @@
-package com.ymkwon.kb2023.api.v1.service.search.blog
+package com.ymkwon.kb2023.api.v1.service.search.request
 
 import com.ymkwon.kb2023.search.SearchOrder
 
-class BlogSearchRequest(
+open class CommonSearchRequest(
     val query: String,
     val page: Int,
     val pageSize: Int,
