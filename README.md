@@ -158,6 +158,9 @@ $ java -jar build/libs/kb2023-0.0.1-SNAPSHOT.jar
        * 상대적 2차 캐시가 제대로 동작하지 않을 경우 스스로 처리 - fail safe
        * 상대적 2차 캐시가 동작 중이긴 하지만 busy 한 상황에서(response threshold 설정) 상대적 1차 캐시가 스스로 처리 - balancing
        * 상대적 1차 캐시가 받은 cache 를 상대적 2차 캐시로도 저장 가능 - fresh cache propagation
+   * Spring boot 버전 변경
+     * SNAPSHOT 은 개발 초기 기반 버전
+   * 각종 파리미터들 - eg. WebClient의 timeout 이나 connection pool 설정 reference 참조하여 적용 및 테스트 필요
 
 ---
 
