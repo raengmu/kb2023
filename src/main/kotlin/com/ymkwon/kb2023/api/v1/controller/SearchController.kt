@@ -1,16 +1,10 @@
 package com.ymkwon.kb2023.api.v1.controller
 
 import com.ymkwon.kb2023.api.v1.service.search.AsyncSearchQueryCountAccumulator
-import com.ymkwon.kb2023.api.v1.service.search.domain.blog.kakao.KakaoBlogSearchRequest
-import com.ymkwon.kb2023.api.v1.service.search.domain.blog.kakao.KakaoBlogSearchSource
-import com.ymkwon.kb2023.api.v1.service.search.domain.blog.naver.NaverBlogSearchRequest
-import com.ymkwon.kb2023.api.v1.service.search.domain.blog.naver.NaverBlogSearchSource
-import com.ymkwon.kb2023.api.v1.service.search.domain.book.BookSearchRequest
+import com.ymkwon.kb2023.api.v1.service.search.domain.book.BookSearchServiceRequest
 import com.ymkwon.kb2023.api.v1.service.search.domain.book.BookSearchTarget
-import com.ymkwon.kb2023.api.v1.service.search.domain.book.kakao.KakaoBookSearchRequest
-import com.ymkwon.kb2023.api.v1.service.search.domain.book.kakao.KakaoBookSearchSource
 import com.ymkwon.kb2023.api.v1.service.config.SearchServiceConfig
-import com.ymkwon.kb2023.api.v1.service.search.request.CommonSearchRequest
+import com.ymkwon.kb2023.api.v1.service.search.request.BaseSearchServiceRequest
 import com.ymkwon.kb2023.config.ApplicationProperties
 import com.ymkwon.kb2023.exception.CommonException
 import com.ymkwon.kb2023.exception.CommonExceptionCode
@@ -26,11 +20,12 @@ class SearchController(
     private val searchServiceConfig: SearchServiceConfig,
     private val asyncSearchQueryCountAccumulator: AsyncSearchQueryCountAccumulator,
     private val appProperties: ApplicationProperties,
-    // Blog
-    private val kakaoBlogSearchSource: KakaoBlogSearchSource,
-    private val naverBlogSearchSource: NaverBlogSearchSource,
-    // Book
-    private val kakaoBookSearchSource: KakaoBookSearchSource
+    // ATTENTION: These-like injection should be in Service
+    //    // Blog
+    //    private val kakaoBlogSearchSource: KakaoBlogSearchSource,
+    //    private val naverBlogSearchSource: NaverBlogSearchSource,
+    //    // Book
+    //    private val kakaoBookSearchSource: KakaoBookSearchSource
 ) {
     @GetMapping("/blog")
     fun searchBlog(
@@ -45,15 +40,13 @@ class SearchController(
 
         asyncSearchQueryCountAccumulator.accumulateQueryCount(searchServiceConfig.blogSearchService, query)
 
-        val request = CommonSearchRequest(
+        val request = BaseSearchServiceRequest(
             query =  query,
             page = page - 1,
             pageSize = pageSize,
             sorder = if (order == 'L') SearchOrder.LATEST else SearchOrder.ACCURACY)
-        return searchServiceConfig.blogSearchService.search(listOf(
-            KakaoBlogSearchRequest(kakaoBlogSearchSource, request),
-            NaverBlogSearchRequest(naverBlogSearchSource, request)
-        )) ?: throw CommonException(CommonExceptionCode.NO_DATA)
+        return searchServiceConfig.blogSearchService.search(request)
+                ?: throw CommonException(CommonExceptionCode.NO_DATA)
     }
 
     @GetMapping("/blog/countTop")
@@ -76,7 +69,7 @@ class SearchController(
 
         asyncSearchQueryCountAccumulator.accumulateQueryCount(searchServiceConfig.bookSearchService, query)
 
-        val request = BookSearchRequest(
+        val request = BookSearchServiceRequest(
             query =  query,
             page = page - 1,
             pageSize = pageSize,
@@ -87,9 +80,8 @@ class SearchController(
                 'E' -> BookSearchTarget.PERSON
                 else -> BookSearchTarget.TITLE
             })
-        return searchServiceConfig.bookSearchService.search(listOf(
-            KakaoBookSearchRequest(kakaoBookSearchSource, request)
-        )) ?: throw CommonException(CommonExceptionCode.NO_DATA)
+        return searchServiceConfig.bookSearchService.search(request)
+                ?: throw CommonException(CommonExceptionCode.NO_DATA)
     }
 
     @GetMapping("/book/countTop")

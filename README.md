@@ -13,6 +13,7 @@
   * 기타
   * TODO:
   * TODO: FURTHER
+  * TODO: FUR-FURTHER (After assessment)
 * [API 상세](#API-상세)
 * [오류코드](#오류코드)
 
@@ -141,6 +142,22 @@ $ java -jar build/libs/kb2023-0.0.1-SNAPSHOT.jar
     * (완료) search cache의 가변 길이 key를(source 정보 및 http fixed query params concate) md5로 16bytes로 고정하여 DB 접근 성능 및 용량 절약 
     * (완료) WebMvcConfigurer.addCorsMappings override to allow origins/paths/methods/headers
     * Kakao 나 Naver API key 은폐
+
+6. TODO: FUR-FURTHER (After assessment)
+   * (완료) private 에 @Transactional 정정 - need to study fundamental
+   * (완료) fallback request list injection을 controller 가 아닌 service 에서 담당
+     * FallbackRequestBuilder config에서 생성하도록 수정
+   * (완료) JPA entity 에서 timestamp directive 는 H2 전용으로 부적절하므로 삭제
+   * SearchHelperImpl이 POJO이긴 하지만 너무 많은 기능 또는 옵션이 하나의 함수로 고정되어 있어 책임 분리가 되어 있지 않음
+     * SearchSession의 내용을 context operation? - Stream 또는 Retriever 구현에 사용된 WebClient 사용 방법처럼 속성 설정 또는 process 정의 가능토록??
+   * 2차 캐시 구현
+     * 현재 구현의 cache 및 countTop 은 @EnableCaching 으로 변경하고 현재의 POJO(SearchHelperImpl)을 2차 캐시에서 사용
+     * 또는! 상대적 1,2차 캐시 개념?? - just an idea to share
+       * 2차 캐시도 현재 구현과 동일하게 구현하고 자신의 입장에서 2차 캐시가 있으면 이를 사용할 수 있도록 공통으로 구현
+       * 같은 구현으로 2차 캐시 뿐 아니라 3차, 4차 캐시도 가능하고 유지보수성 높임
+       * 상대적 2차 캐시가 제대로 동작하지 않을 경우 스스로 처리 - fail safe
+       * 상대적 2차 캐시가 동작 중이긴 하지만 busy 한 상황에서(response threshold 설정) 상대적 1차 캐시가 스스로 처리 - balancing
+       * 상대적 1차 캐시가 받은 cache 를 상대적 2차 캐시로도 저장 가능 - fresh cache propagation
 
 ---
 

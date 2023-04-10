@@ -17,16 +17,18 @@ class JpaSearchCacheAsyncTask(
     private val logger = KotlinLogging.logger {}
 
     @Async("taskExecutor")
+    @Transactional
     fun save(session: SearchSession, cachePages: Set<SearchCachePage>) {
         saveInternal(session, cachePages)
     }
 
     @Async("taskExecutor")
+    @Transactional
     fun pruneExpired(expiredAt: LocalDateTime) {
         pruneExpiredInternal(expiredAt)
     }
 
-    @Transactional
+    //@Transactional ATTENTION: @Transactional should be public - need to study
     private fun saveInternal(searchSession: SearchSession, cachePages: Set<SearchCachePage>) {
         try {
             cachePages.forEach {
@@ -44,7 +46,7 @@ class JpaSearchCacheAsyncTask(
         }
     }
 
-    @Transactional
+    //@Transactional ATTENTION: @Transactional should be public - need to study
     private fun pruneExpiredInternal(expiredAt: LocalDateTime) {
         try {
             cacheRepository.deleteAllByCreatedAtLessThanOrEqual(expiredAt)

@@ -25,7 +25,7 @@ class SearchQueryCountEntity(
     @Column(updatable = true)
     var cnt: Long = 0,
 
-    @CreationTimestamp
+    //@CreationTimestamp - ATTENTION: Already LocalDateTime.now() assigned. In addition, this directive is specific on H2
     @Column(nullable = false, updatable = false)
     var createdAt: LocalDateTime = LocalDateTime.now()
 )

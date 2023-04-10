@@ -25,7 +25,7 @@ class SearchCacheEntity(
     @Column(columnDefinition = "text")
     val resultRaw: String,
 
-    @CreationTimestamp
+    //@CreationTimestamp - ATTENTION: Already LocalDateTime.now() assigned. In addition, this directive is specific on H2
     @Column(nullable = false, updatable = false)
     var createdAt: LocalDateTime = LocalDateTime.now()
 )

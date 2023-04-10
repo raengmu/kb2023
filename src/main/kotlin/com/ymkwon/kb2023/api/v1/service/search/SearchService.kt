@@ -1,13 +1,13 @@
 package com.ymkwon.kb2023.api.v1.service.search
 
-import com.ymkwon.kb2023.search.SearchRequest
+import com.ymkwon.kb2023.api.v1.service.search.request.BaseSearchServiceRequest
 import com.ymkwon.kb2023.search.SearchResult
 import com.ymkwon.kb2023.search.dto.SearchQueryCountDto
 
 interface SearchService {
     val category: String
 
-    fun search(requests: List<SearchRequest>): SearchResult?
+    fun search(serviceRequest: BaseSearchServiceRequest): SearchResult?
 
     fun searchQueryTop(num: Int): List<SearchQueryCountDto>
 

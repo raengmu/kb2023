@@ -37,7 +37,6 @@ class JpaSearchCache(
         cacheAsync.save(searchSession, TreeSet(cachePages))
     }
 
-    @Transactional
     override fun pruneExpired(expiredAt: LocalDateTime) {
         cacheAsync.pruneExpired(expiredAt)
     }

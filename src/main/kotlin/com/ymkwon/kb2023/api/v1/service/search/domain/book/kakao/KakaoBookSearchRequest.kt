@@ -1,6 +1,6 @@
 package com.ymkwon.kb2023.api.v1.service.search.domain.book.kakao
 
-import com.ymkwon.kb2023.api.v1.service.search.domain.book.BookSearchRequest
+import com.ymkwon.kb2023.api.v1.service.search.domain.book.BookSearchServiceRequest
 import com.ymkwon.kb2023.api.v1.service.search.domain.book.BookSearchTarget
 import com.ymkwon.kb2023.search.SearchOrder
 import com.ymkwon.kb2023.search.SearchRequest
@@ -8,7 +8,7 @@ import com.ymkwon.kb2023.search.SearchSource
 
 class KakaoBookSearchRequest(
     override val source: SearchSource,
-    private val request: BookSearchRequest
+    private val request: BookSearchServiceRequest
 ) : SearchRequest {
     override val page: Int
         get() = request.page

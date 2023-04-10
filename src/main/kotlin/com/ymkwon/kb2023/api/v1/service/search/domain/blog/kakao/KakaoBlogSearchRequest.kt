@@ -1,13 +1,13 @@
 package com.ymkwon.kb2023.api.v1.service.search.domain.blog.kakao
 
-import com.ymkwon.kb2023.api.v1.service.search.request.CommonSearchRequest
+import com.ymkwon.kb2023.api.v1.service.search.request.BaseSearchServiceRequest
 import com.ymkwon.kb2023.search.SearchOrder
 import com.ymkwon.kb2023.search.SearchRequest
 import com.ymkwon.kb2023.search.SearchSource
 
 class KakaoBlogSearchRequest(
     override val source: SearchSource,
-    private val request: CommonSearchRequest
+    private val request: BaseSearchServiceRequest
 ) : SearchRequest {
     override val page: Int
         get() = request.page
