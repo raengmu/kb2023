@@ -1,9 +1,8 @@
 package com.ymkwon.kb2023.searchjpa.entity
 
-import org.hibernate.annotations.CreationTimestamp
+import jakarta.persistence.*
 import java.io.Serializable
 import java.time.LocalDateTime
-import javax.persistence.*
 
 data class SearchQueryCountEntityId(
     val category: String = "",

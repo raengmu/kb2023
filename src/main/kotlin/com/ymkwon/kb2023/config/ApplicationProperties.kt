@@ -1,9 +1,7 @@
 package com.ymkwon.kb2023.config
 
 import org.springframework.boot.context.properties.ConfigurationProperties
-import org.springframework.boot.context.properties.ConstructorBinding
 
-@ConstructorBinding
 @ConfigurationProperties(prefix = "properties")
 data class ApplicationProperties(
     val webClient: Map<String, Int>,

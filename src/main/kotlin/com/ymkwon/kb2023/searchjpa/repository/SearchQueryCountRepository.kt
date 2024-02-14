@@ -3,6 +3,8 @@ package com.ymkwon.kb2023.searchjpa.repository
 import com.ymkwon.kb2023.search.dto.SearchQueryCountDto
 import com.ymkwon.kb2023.searchjpa.entity.SearchQueryCountEntity
 import com.ymkwon.kb2023.searchjpa.entity.SearchQueryCountEntityId
+import jakarta.persistence.LockModeType
+import jakarta.persistence.QueryHint
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Lock
@@ -10,8 +12,6 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.data.jpa.repository.QueryHints
 import org.springframework.stereotype.Repository
 import java.util.*
-import javax.persistence.LockModeType
-import javax.persistence.QueryHint
 
 @Repository
 interface SearchQueryCountRepository: JpaRepository<SearchQueryCountEntity, SearchQueryCountEntityId> {
