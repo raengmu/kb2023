@@ -1,20 +1,19 @@
 package com.ymkwon.kb2023.api.v1.service.search.retriever
 
-import com.ymkwon.kb2023.config.WebClientConfig
 import com.ymkwon.kb2023.search.SearchCachePage
 import com.ymkwon.kb2023.search.SearchRetriever
 import com.ymkwon.kb2023.search.SearchSession
 import com.ymkwon.kb2023.search.exception.SearchException
 import com.ymkwon.kb2023.search.exception.SearchExceptionCode
-import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
+import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.WebClientException
 import reactor.core.publisher.Mono
 import reactor.core.scheduler.Schedulers
 import java.util.*
 
 class SimpleJsonWebSearchRetriever(
-    private val webClientConfig: WebClientConfig
+    private val defaultWebClient: WebClient
 ): SearchRetriever {
     //private val logger = KotlinLogging.logger {}
 
@@ -26,10 +25,8 @@ class SimpleJsonWebSearchRetriever(
         val source = searchSession.request.source
         val cachePages = TreeSet<SearchCachePage>()
         try {
-            val webClient = webClientConfig
-                .webClientBuilder()
+            val webClient = defaultWebClient.mutate()
                 .baseUrl(source.url)
-                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .defaultHeaders { source.headers.forEach { (k, v) -> it[k] = v } }
                 .build()
             val pageIdx = IntArray(absentCachePages.size)

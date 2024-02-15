@@ -16,7 +16,7 @@ import java.util.*
 @Repository
 interface SearchQueryCountRepository: JpaRepository<SearchQueryCountEntity, SearchQueryCountEntityId> {
     @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @QueryHints(QueryHint(name = "javax.persistence.lock.timeout", value = "3000"))
+    @QueryHints(QueryHint(name = "jakarta.persistence.lock.timeout", value = "3000"))
     fun findByCategoryAndQuery(category: String, query: String): Optional<SearchQueryCountEntity>
 
     @Query("select s.query as query, s.cnt as cnt "+
@@ -32,7 +32,7 @@ interface SearchQueryCountRepository: JpaRepository<SearchQueryCountEntity, Sear
     fun findAllSumOfCnt(page: Pageable): List<SearchQueryCountDto>
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @QueryHints(QueryHint(name = "javax.persistence.lock.timeout", value = "3000"))
+    @QueryHints(QueryHint(name = "jakarta.persistence.lock.timeout", value = "3000"))
     @Query("select s "+
             "from SearchQueryCountEntity s "+
             "where s.category in :categories and s.query in :queries")

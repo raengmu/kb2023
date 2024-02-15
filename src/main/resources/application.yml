@@ -11,8 +11,15 @@ properties:
   api:
     version: v1
   webClient:
-    connectionTimeoutMsec: 5000
-    maxInMemorySize: 4194304
+    connectionTimeout: 15s
+    responseTimeout: 15s
+    maxInMemorySizeKb: 262_144
+    connPool:
+      # async-request-num should be less than it
+      maxConnectionNum: 40
+      pendingAcquireTimeout: 1000ms
+      pendingAcquireMaxCount: 5
+      maxIdleTime: 30000ms
   search:
     enableCache: true
     cacheExpireSec: 60
