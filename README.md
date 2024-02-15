@@ -27,7 +27,7 @@ https://github.com/raengmu/kb2023/releases/tag/kb2023.1
 > $ wget https://github.com/raengmu/kb2023/releases/download/kb2023.1/kb2023-0.0.1-SNAPSHOT.jar
 
 실행
-> $ java -jar kb2023-0.0.1-SNAPSHOT.jar
+> $ java -jar kb2023-1.0.0.jar
 
 WAS port : 8080
 
